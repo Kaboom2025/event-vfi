@@ -1,0 +1,1 @@
+Neural video frame interpolation using synthetic event cameras. Four architectures compared — the best achieves +4.14 dB over RGB-only baselines. Interactive demo with before/after comparisons.

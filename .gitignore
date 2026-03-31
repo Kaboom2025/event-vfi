@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Checkpoints (too large for git)
+checkpoints/
+*.pth
+*.pt
+
+# Environment
+.env
+.env.local
