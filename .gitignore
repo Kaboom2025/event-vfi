@@ -21,3 +21,4 @@ checkpoints/
 # Environment
 .env
 .env.local
+.vercel
