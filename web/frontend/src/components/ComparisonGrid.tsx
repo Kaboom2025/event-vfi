@@ -1,80 +1,63 @@
 import ImageSlider from './ImageSlider'
 
-const comparisons = [
-  {
-    id: 'scene-0',
-    title: 'Scene 1 — Fast Camera Pan',
-    gt: '/images/comparisons/gt_0.png',
-    baseline: '/images/comparisons/baseline_0.png',
-    best: '/images/comparisons/best_0.png',
-  },
-  {
-    id: 'scene-1',
-    title: 'Scene 2 — Object Motion',
-    gt: '/images/comparisons/gt_1.png',
-    baseline: '/images/comparisons/baseline_1.png',
-    best: '/images/comparisons/best_1.png',
-  },
-  {
-    id: 'scene-4',
-    title: 'Scene 3 — Complex Motion',
-    gt: '/images/comparisons/gt_4.png',
-    baseline: '/images/comparisons/baseline_4.png',
-    best: '/images/comparisons/best_4.png',
-  },
-  {
-    id: 'scene-6',
-    title: 'Scene 4 — Fine Details',
-    gt: '/images/comparisons/gt_6.png',
-    baseline: '/images/comparisons/baseline_6.png',
-    best: '/images/comparisons/best_6.png',
-  },
+const scenes = [
+  { id: 0, title: 'Scene 1 — Fast Camera Pan' },
+  { id: 1, title: 'Scene 2 — Object Motion' },
+  { id: 4, title: 'Scene 3 — Complex Motion' },
+  { id: 6, title: 'Scene 4 — Fine Details' },
+  { id: 2, title: 'Scene 5 — Subtle Motion' },
+  { id: 3, title: 'Scene 6 — Texture Detail' },
+  { id: 5, title: 'Scene 7 — Low Contrast' },
+  { id: 7, title: 'Scene 8 — High Motion' },
 ]
 
 export default function ComparisonGrid() {
   return (
-    <div className="space-y-10">
-      {/* GT vs Baseline */}
+    <div className="space-y-14">
+      {/* Animated GIF comparisons */}
       <div>
-        <h3 className="text-lg font-medium text-white mb-4">
-          Ground Truth vs RGB Baseline
-          <span className="text-neutral-500 text-sm font-normal ml-2">
-            (drag the slider)
-          </span>
+        <h3 className="text-lg font-medium text-white mb-2">
+          Animated Comparisons
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {comparisons.slice(0, 2).map(c => (
-            <div key={c.id + '-gt-base'}>
-              <p className="text-neutral-400 text-sm mb-2">{c.title}</p>
-              <ImageSlider
-                beforeSrc={c.gt}
-                afterSrc={c.baseline}
-                beforeLabel="Ground Truth"
-                afterLabel="RGB Baseline"
-                afterMetric="29.95 dB"
-              />
+        <p className="text-neutral-400 text-sm mb-6">
+          Each GIF cycles through: <span className="text-white">Ground Truth</span> →{' '}
+          <span className="text-red-400">RGB Baseline (Ablated)</span> →{' '}
+          <span className="text-emerald-400">EventWarpNetV2 (Ours)</span>
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {scenes.map(s => (
+            <div key={`gif-${s.id}`}>
+              <p className="text-neutral-400 text-xs mb-1.5">{s.title}</p>
+              <div className="rounded-lg overflow-hidden border border-neutral-800">
+                <img
+                  src={`/images/gifs/comparison_${s.id}.gif`}
+                  alt={`${s.title}: cycling GT, Baseline, EventWarpNetV2`}
+                  className="w-full"
+                />
+              </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* GT vs Best Model */}
+      {/* Interactive sliders: GT vs Best */}
       <div>
-        <h3 className="text-lg font-medium text-white mb-4">
-          Ground Truth vs EventWarpNetV2
+        <h3 className="text-lg font-medium text-white mb-2">
+          Interactive Sliders
           <span className="text-emerald-400 text-sm font-normal ml-2">
-            (+4.14 dB improvement)
+            Ground Truth vs EventWarpNetV2
           </span>
         </h3>
+        <p className="text-neutral-500 text-sm mb-6">Drag to compare</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {comparisons.map(c => (
-            <div key={c.id + '-gt-best'}>
-              <p className="text-neutral-400 text-sm mb-2">{c.title}</p>
+          {scenes.slice(0, 4).map(s => (
+            <div key={`slider-gt-best-${s.id}`}>
+              <p className="text-neutral-400 text-sm mb-2">{s.title}</p>
               <ImageSlider
-                beforeSrc={c.gt}
-                afterSrc={c.best}
+                beforeSrc={`/images/comparisons/gt_${s.id}.png`}
+                afterSrc={`/images/comparisons/best_${s.id}.png`}
                 beforeLabel="Ground Truth"
-                afterLabel="EventWarpNetV2"
+                afterLabel="EventWarpNetV2 (Ours)"
                 afterMetric="34.09 dB"
               />
             </div>
@@ -82,24 +65,25 @@ export default function ComparisonGrid() {
         </div>
       </div>
 
-      {/* Baseline vs Best */}
+      {/* Interactive sliders: Baseline vs Best */}
       <div>
-        <h3 className="text-lg font-medium text-white mb-4">
-          RGB Baseline vs EventWarpNetV2
+        <h3 className="text-lg font-medium text-white mb-2">
+          Ablated vs Ours
           <span className="text-neutral-500 text-sm font-normal ml-2">
-            (see the difference events make)
+            See the difference events make
           </span>
         </h3>
+        <p className="text-neutral-500 text-sm mb-6">Drag to compare</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {comparisons.slice(0, 2).map(c => (
-            <div key={c.id + '-base-best'}>
-              <p className="text-neutral-400 text-sm mb-2">{c.title}</p>
+          {scenes.slice(0, 4).map(s => (
+            <div key={`slider-base-best-${s.id}`}>
+              <p className="text-neutral-400 text-sm mb-2">{s.title}</p>
               <ImageSlider
-                beforeSrc={c.baseline}
-                afterSrc={c.best}
+                beforeSrc={`/images/comparisons/baseline_${s.id}.png`}
+                afterSrc={`/images/comparisons/best_${s.id}.png`}
                 beforeLabel="RGB Baseline"
                 beforeMetric="29.95 dB"
-                afterLabel="EventWarpNetV2"
+                afterLabel="EventWarpNetV2 (Ours)"
                 afterMetric="34.09 dB"
               />
             </div>
